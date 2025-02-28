@@ -60,6 +60,7 @@ import {
   Hand,
   Laptop,
   Database,
+  Gauge,
 } from "lucide-react";
 import FraudDetectionThresholds from "./FraudDetectionThresholds";
 import BehaviorAnalysis from "./BehaviorAnalysis";
@@ -72,6 +73,7 @@ import TrafficSourceAnalysis from "./TrafficSourceAnalysis";
 import ConversionAnalysis from "./ConversionAnalysis";
 import BehavioralBiometrics from "./BehavioralBiometrics";
 import OrganizedFraudAnalysis from "./OrganizedFraudAnalysis";
+import FraudScoreSystem from "./FraudScoreSystem";
 
 interface UserActivity {
   id: string;
@@ -444,6 +446,10 @@ const FraudDetectionPage = () => {
             <Network className="h-4 w-4 mr-2" />
             Organized Fraud
           </TabsTrigger>
+          <TabsTrigger value="scoring" className="flex items-center">
+            <Gauge className="h-4 w-4 mr-2" />
+            Fraud Score System
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="users" className="mt-4">
@@ -718,4 +724,145 @@ const FraudDetectionPage = () => {
                                   {activity.ipAddress}
                                 </span>
                               </div>
-                              <div className="
+                              <div className="flex items-center">
+                                <span className="text-xs font-medium">
+                                  Vị trí:
+                                </span>
+                                <span className="text-xs ml-1">
+                                  {activity.location}
+                                </span>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex flex-col space-y-1">
+                              {activity.suspiciousActivities.map(
+                                (item, index) => (
+                                  <span
+                                    key={index}
+                                    className="inline-flex items-center text-xs"
+                                  >
+                                    <AlertTriangle className="h-3 w-3 mr-1 text-amber-500" />
+                                    {item}
+                                  </span>
+                                ),
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              className={getConfidenceColor(
+                                activity.confidenceScore,
+                              )}
+                            >
+                              {activity.confidenceScore}%
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {getStatusBadge(activity.status)}
+                          </TableCell>
+                          <TableCell>
+                            <span
+                              className={getExpirationColor(activity.expiresIn)}
+                            >
+                              {activity.expiresIn} ngày
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                  <span className="sr-only">Mở menu</span>
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem>
+                                  <Eye className="h-4 w-4 mr-2" />
+                                  Xem chi tiết
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <CheckCircle className="h-4 w-4 mr-2 text-red-500" />
+                                  Xác nhận gian lận
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <XCircle className="h-4 w-4 mr-2" />
+                                  Bỏ qua
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Flag className="h-4 w-4 mr-2" />
+                                  Đánh dấu để xem xét
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="thresholds" className="mt-4">
+          <FraudDetectionThresholds />
+        </TabsContent>
+
+        <TabsContent value="auto" className="mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Phát hiện tự động</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Nội dung phát hiện tự động sẽ được hiển thị ở đây.</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="behavior" className="mt-4">
+          <BehaviorAnalysis />
+        </TabsContent>
+
+        <TabsContent value="advanced" className="mt-4">
+          <AdvancedBotDetection />
+        </TabsContent>
+
+        <TabsContent value="network" className="mt-4">
+          <NetworkAnalysis />
+        </TabsContent>
+
+        <TabsContent value="ai" className="mt-4">
+          <AIFraudDetection />
+        </TabsContent>
+
+        <TabsContent value="vietnam" className="mt-4">
+          <VietnameseClickFraudDetection />
+        </TabsContent>
+
+        <TabsContent value="traffic" className="mt-4">
+          <TrafficSourceAnalysis />
+        </TabsContent>
+
+        <TabsContent value="conversion" className="mt-4">
+          <ConversionAnalysis />
+        </TabsContent>
+
+        <TabsContent value="biometrics" className="mt-4">
+          <BehavioralBiometrics />
+        </TabsContent>
+
+        <TabsContent value="organized" className="mt-4">
+          <OrganizedFraudAnalysis />
+        </TabsContent>
+
+        <TabsContent value="scoring" className="mt-4">
+          <FraudScoreSystem />
+        </TabsContent>
+      </Tabs>
+    </DashboardLayout>
+  );
+};
+
+export default FraudDetectionPage;
