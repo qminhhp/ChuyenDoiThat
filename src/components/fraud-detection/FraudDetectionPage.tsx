@@ -48,8 +48,30 @@ import {
   Info,
   ArrowUpDown,
   Settings,
+  Brain,
+  Fingerprint,
+  Network,
+  Activity,
+  Map,
+  BarChart,
+  FileText,
+  Users,
+  Keyboard,
+  Hand,
+  Laptop,
+  Database,
 } from "lucide-react";
 import FraudDetectionThresholds from "./FraudDetectionThresholds";
+import BehaviorAnalysis from "./BehaviorAnalysis";
+import MouseTrajectoryModel from "./MouseTrajectoryModel";
+import AdvancedBotDetection from "./AdvancedBotDetection";
+import NetworkAnalysis from "./NetworkAnalysis";
+import AIFraudDetection from "./AIFraudDetection";
+import VietnameseClickFraudDetection from "./VietnameseClickFraudDetection";
+import TrafficSourceAnalysis from "./TrafficSourceAnalysis";
+import ConversionAnalysis from "./ConversionAnalysis";
+import BehavioralBiometrics from "./BehavioralBiometrics";
+import OrganizedFraudAnalysis from "./OrganizedFraudAnalysis";
 
 interface UserActivity {
   id: string;
@@ -386,6 +408,42 @@ const FraudDetectionPage = () => {
             <AlertCircle className="h-4 w-4 mr-2" />
             Phát hiện tự động
           </TabsTrigger>
+          <TabsTrigger value="behavior" className="flex items-center">
+            <Brain className="h-4 w-4 mr-2" />
+            Phân tích hành vi
+          </TabsTrigger>
+          <TabsTrigger value="advanced" className="flex items-center">
+            <Fingerprint className="h-4 w-4 mr-2" />
+            Phát hiện Bot nâng cao
+          </TabsTrigger>
+          <TabsTrigger value="network" className="flex items-center">
+            <Network className="h-4 w-4 mr-2" />
+            Phân tích mạng
+          </TabsTrigger>
+          <TabsTrigger value="ai" className="flex items-center">
+            <Activity className="h-4 w-4 mr-2" />
+            AI Phát hiện bot
+          </TabsTrigger>
+          <TabsTrigger value="vietnam" className="flex items-center">
+            <Map className="h-4 w-4 mr-2" />
+            Click Fraud Việt Nam
+          </TabsTrigger>
+          <TabsTrigger value="traffic" className="flex items-center">
+            <BarChart className="h-4 w-4 mr-2" />
+            Phân tích nguồn traffic
+          </TabsTrigger>
+          <TabsTrigger value="conversion" className="flex items-center">
+            <FileText className="h-4 w-4 mr-2" />
+            Phân tích chuyển đổi
+          </TabsTrigger>
+          <TabsTrigger value="biometrics" className="flex items-center">
+            <Users className="h-4 w-4 mr-2" />
+            Behavioral Biometrics
+          </TabsTrigger>
+          <TabsTrigger value="organized" className="flex items-center">
+            <Network className="h-4 w-4 mr-2" />
+            Organized Fraud
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="users" className="mt-4">
@@ -660,298 +718,4 @@ const FraudDetectionPage = () => {
                                   {activity.ipAddress}
                                 </span>
                               </div>
-                              <div className="flex items-center">
-                                <span className="text-xs font-medium">
-                                  Vị trí:
-                                </span>
-                                <span className="text-xs ml-1">
-                                  {activity.location}
-                                </span>
-                              </div>
-                              <div className="flex items-center">
-                                <span className="text-xs font-medium">
-                                  Thiết bị:
-                                </span>
-                                <span
-                                  className="text-xs ml-1 truncate max-w-[150px]"
-                                  title={activity.userAgent}
-                                >
-                                  {activity.userAgent.includes("Windows")
-                                    ? "Windows"
-                                    : activity.userAgent.includes("iPhone")
-                                      ? "iPhone"
-                                      : activity.userAgent.includes("Android")
-                                        ? "Android"
-                                        : activity.userAgent.includes("Mac")
-                                          ? "Mac"
-                                          : "Khác"}
-                                </span>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex flex-col space-y-1">
-                              {activity.suspiciousActivities.map(
-                                (act, index) => (
-                                  <div
-                                    key={index}
-                                    className="flex items-center"
-                                  >
-                                    <AlertCircle className="h-3 w-3 text-amber-500 mr-1" />
-                                    <span className="text-xs">{act}</span>
-                                  </div>
-                                ),
-                              )}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              className={getConfidenceColor(
-                                activity.confidenceScore,
-                              )}
-                            >
-                              {activity.confidenceScore}%
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            {getStatusBadge(activity.status)}
-                          </TableCell>
-                          <TableCell>
-                            <span
-                              className={getExpirationColor(activity.expiresIn)}
-                            >
-                              {activity.expiresIn} ngày
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <MoreVertical className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    console.log(`Xem chi tiết ${activity.id}`)
-                                  }
-                                >
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  Xem chi tiết
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    console.log(`Đánh dấu ${activity.id}`)
-                                  }
-                                >
-                                  <Flag className="mr-2 h-4 w-4" />
-                                  Đánh dấu để xem xét
-                                </DropdownMenuItem>
-                                {activity.status === "pending" && (
-                                  <>
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        console.log(
-                                          `Xác nhận gian lận ${activity.id}`,
-                                        )
-                                      }
-                                    >
-                                      <CheckCircle className="mr-2 h-4 w-4 text-red-500" />
-                                      Xác nhận gian lận
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        console.log(`Bỏ qua ${activity.id}`)
-                                      }
-                                    >
-                                      <XCircle className="mr-2 h-4 w-4" />
-                                      Bỏ qua
-                                    </DropdownMenuItem>
-                                  </>
-                                )}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-
-              {/* Pagination */}
-              <div className="flex items-center justify-between mt-4">
-                <div className="text-sm text-muted-foreground">
-                  Hiển thị {sortedActivities.length} trên{" "}
-                  {userActivities.length} người dùng
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Button variant="outline" size="sm" disabled>
-                    Trước
-                  </Button>
-                  <Button variant="outline" size="sm" disabled>
-                    Tiếp theo
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Information about expiration */}
-          <div className="mt-4 text-sm text-muted-foreground">
-            <p className="flex items-center">
-              <Info className="h-4 w-4 mr-1" />
-              Các hoạt động đáng ngờ sẽ tự động hết hạn sau 30 ngày nếu không
-              được xử lý.
-            </p>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="thresholds" className="mt-4">
-          <FraudDetectionThresholds
-            onSave={(thresholds) =>
-              console.log("Saved thresholds:", thresholds)
-            }
-            onReset={() => console.log("Reset thresholds to defaults")}
-          />
-        </TabsContent>
-
-        <TabsContent value="auto" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <AlertTriangle className="h-5 w-5 mr-2 text-red-500" />
-                Phát hiện bot tự động
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="bg-muted p-4 rounded-md">
-                  <h3 className="text-lg font-semibold mb-2">
-                    Các trường hợp phát hiện bot tự động
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Hệ thống sẽ tự động đánh dấu và chặn các hoạt động sau mà
-                    không cần xác nhận thủ công:
-                  </p>
-
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <p className="font-medium">Tốc độ nhấp chuột cực cao</p>
-                        <p className="text-sm text-muted-foreground">
-                          Trên 30 nhấp chuột/phút với mẫu đều đặn chính xác
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <p className="font-medium">
-                          Không có chuyển động chuột
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Nhiều lần nhấp chuột mà không có chuyển động chuột
-                          trước đó
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <p className="font-medium">Thời gian dừng cực ngắn</p>
-                        <p className="text-sm text-muted-foreground">
-                          Thời gian dừng trên trang dưới 1 giây trước khi chuyển
-                          đổi
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <p className="font-medium">Vị trí địa lý bất thường</p>
-                        <p className="text-sm text-muted-foreground">
-                          Truy cập từ 3+ quốc gia khác nhau trong vòng 1 giờ
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-                      <div>
-                        <p className="font-medium">
-                          Mẫu chuyển đổi giống hệt nhau
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Nhiều lượt chuyển đổi với thời gian chính xác giống
-                          nhau giữa các bước
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border rounded-md p-4">
-                  <h3 className="text-lg font-semibold mb-2">
-                    Thống kê phát hiện tự động
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div className="bg-red-50 p-3 rounded-md">
-                      <p className="text-sm text-muted-foreground">
-                        Bot đã chặn (7 ngày qua)
-                      </p>
-                      <p className="text-2xl font-bold">1,247</p>
-                    </div>
-                    <div className="bg-amber-50 p-3 rounded-md">
-                      <p className="text-sm text-muted-foreground">
-                        Độ chính xác phát hiện
-                      </p>
-                      <p className="text-2xl font-bold">98.7%</p>
-                    </div>
-                    <div className="bg-green-50 p-3 rounded-md">
-                      <p className="text-sm text-muted-foreground">
-                        Thời gian phản ứng trung bình
-                      </p>
-                      <p className="text-2xl font-bold">0.8 giây</p>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center">
-                    <p className="text-sm text-muted-foreground">
-                      Cập nhật lần cuối: Hôm nay, 15:30
-                    </p>
-                    <Button variant="outline" size="sm">
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                      Làm mới dữ liệu
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="border border-amber-200 bg-amber-50 rounded-md p-4">
-                  <div className="flex items-start gap-2">
-                    <Info className="h-5 w-5 text-amber-500 mt-0.5" />
-                    <div>
-                      <h3 className="font-medium">Lưu ý quan trọng</h3>
-                      <p className="text-sm">
-                        Các trường hợp phát hiện tự động sẽ được ghi lại trong
-                        nhật ký hệ thống và có thể được xem lại trong mục "Lịch
-                        sử phát hiện". Bạn có thể điều chỉnh các ngưỡng phát
-                        hiện tự động trong mục "Cấu hình ngưỡng phát hiện".
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </DashboardLayout>
-  );
-};
-
-export default FraudDetectionPage;
+                              <div className="
